@@ -3,6 +3,7 @@ package com.myappstack.shoot.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.myappstack.shoot.Utils;
 import com.myappstack.shoot.actors.Bullet;
 import com.myappstack.shoot.actors.Gun;
+import com.myappstack.shoot.actors.InfoBar;
 import com.myappstack.shoot.actors.Ufo;
 
 import java.util.ArrayList;
@@ -27,9 +29,9 @@ public class GameStage extends Stage{
     Texture ufoTexture;
     Texture bulletTexture;
 
-    //all actors
     Gun gun;
-    //Ufo ufo;
+    InfoBar bulletBar;
+    InfoBar ufoBar;
 
     //other vars
     int centerx, centery;
@@ -93,6 +95,7 @@ public class GameStage extends Stage{
                 System.out.println("Removin ufo");
                 ufos.remove(u);
                 u.addAction(Actions.removeActor());
+                ufoBar.decrCurrVal();
             }
         }
 
@@ -103,6 +106,7 @@ public class GameStage extends Stage{
         Ufo u = new Ufo(this.ufoTexture);
         ufos.add(u);
         addActor(u);
+        ufoBar.incrCurrVal();
     }
 
     public void loadActors(){
@@ -110,6 +114,24 @@ public class GameStage extends Stage{
         //this.ufo = new Ufo(this.ufoTexture);
         addActor(this.gun);
         //addActor(this.ufo);
+        loadBulletInfoBar();
+        loadUfoInfoBar();
+    }
+
+    public void loadUfoInfoBar(){
+        Vector2 size = new Vector2(Utils.screenWidth/4, Utils.ufoBarHeight);
+        Vector2 pos = new Vector2(Utils.screenWidth - Utils.screenWidth/4 - 2*Utils.bulletBarHeight ,Utils.screenHeight - 2 * Utils.ufoBarHeight);
+
+        this.ufoBar = new InfoBar(this.ufoTexture,pos,size,Utils.MAXUFO,0);
+        addActor(this.ufoBar);
+    }
+
+    public void loadBulletInfoBar(){
+        Vector2 size = new Vector2(Utils.screenWidth/4, Utils.bulletBarHeight);
+        Vector2 pos = new Vector2(Utils.screenWidth - Utils.screenWidth/4 -2*Utils.bulletBarHeight ,Utils.screenHeight - 3 * Utils.bulletBarHeight);
+
+        this.bulletBar = new InfoBar(this.bulletTexture,pos,size,Utils.MAXUFO,Utils.MAXUFO);
+        addActor(this.bulletBar);
     }
 
     public void loadTextures(){
