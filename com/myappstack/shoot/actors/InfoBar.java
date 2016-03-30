@@ -69,6 +69,13 @@ public class InfoBar extends Actor {
         }
     }
 
+    public void incrBy(int by){
+        this.currentVal = this.currentVal + by;
+        if(this.currentVal > this.fullVal){
+            this.currentVal = this.fullVal;
+        }
+    }
+
     public boolean empty(){
         return this.currentVal == 0;
     }

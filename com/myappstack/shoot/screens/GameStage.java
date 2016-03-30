@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.myappstack.shoot.MyGdxGame;
 import com.myappstack.shoot.Utils;
 import com.myappstack.shoot.actors.Bullet;
 import com.myappstack.shoot.actors.Gun;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
  * Created by seb on 19/03/16.
  */
 public class GameStage extends Stage{
+
+    MyGdxGame game;
 
     private final float TIME_STEP = 1 / 300f;
     private float accumulator = 0f;
@@ -42,9 +46,11 @@ public class GameStage extends Stage{
     //util vars
     long timeMillSec;
 
-    public GameStage(){
+    public GameStage(MyGdxGame game){
+        super(new ScreenViewport());
         Gdx.input.setInputProcessor(this);
-
+        this.game = game;
+        //this.game.actionResolver.setOrientation(Utils.LANDSCAPE);
         loadTextures();
         loadActors();
 
@@ -63,6 +69,7 @@ public class GameStage extends Stage{
         Bullet b = new Bullet(this.bulletTexture,newX,newY,gun.getAngle());
         bullets.add(b);
         addActor(b);
+        bulletBar.decrCurrVal();
         return true;
     }
 
@@ -73,6 +80,10 @@ public class GameStage extends Stage{
         accumulator += delta;
         while (accumulator >= delta) {
             accumulator -= TIME_STEP;
+        }
+
+        if(bulletBar.empty() || ufoBar.full()){
+            System.out.println("Game Over");
         }
 
         if(timeMillSec != 0L && TimeUtils.timeSinceMillis(timeMillSec) > 2000){
@@ -92,10 +103,10 @@ public class GameStage extends Stage{
 
         for(Ufo u : ufosToRemove){
             if(ufos.contains(u)){
-                System.out.println("Removin ufo");
                 ufos.remove(u);
                 u.addAction(Actions.removeActor());
                 ufoBar.decrCurrVal();
+                bulletBar.incrBy(5);
             }
         }
 
@@ -130,7 +141,7 @@ public class GameStage extends Stage{
         Vector2 size = new Vector2(Utils.screenWidth/4, Utils.bulletBarHeight);
         Vector2 pos = new Vector2(Utils.screenWidth - Utils.screenWidth/4 -2*Utils.bulletBarHeight ,Utils.screenHeight - 3 * Utils.bulletBarHeight);
 
-        this.bulletBar = new InfoBar(this.bulletTexture,pos,size,Utils.MAXUFO,Utils.MAXUFO);
+        this.bulletBar = new InfoBar(this.bulletTexture,pos,size,Utils.MAXBULLETS,Utils.MAXBULLETS);
         addActor(this.bulletBar);
     }
 

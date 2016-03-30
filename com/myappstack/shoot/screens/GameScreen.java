@@ -3,6 +3,7 @@ package com.myappstack.shoot.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.myappstack.shoot.MyGdxGame;
 
 /**
  * Created by seb on 19/03/16.
@@ -11,8 +12,8 @@ public class GameScreen implements Screen {
 
     private GameStage stage;
 
-    public GameScreen(){
-        this.stage = new GameStage();
+    public GameScreen(MyGdxGame game){
+        this.stage = new GameStage(game);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        //stage.getViewport().update(width, height, false);
     }
 
     @Override
