@@ -3,6 +3,7 @@ package com.myappstack.shoot.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.myappstack.shoot.MyGdxGame;
 
 /**
@@ -10,10 +11,11 @@ import com.myappstack.shoot.MyGdxGame;
  */
 public class GameScreen implements Screen {
 
-    private GameStage stage;
+    private Stage stage;
 
     public GameScreen(MyGdxGame game){
         this.stage = new GameStage(game);
+        //this.stage = new LandTwoGunStage(game);
     }
 
     @Override

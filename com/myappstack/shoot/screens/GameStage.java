@@ -50,7 +50,7 @@ public class GameStage extends Stage{
         super(new ScreenViewport());
         Gdx.input.setInputProcessor(this);
         this.game = game;
-        //this.game.actionResolver.setOrientation(Utils.LANDSCAPE);
+        //this.game.actionResolver.setOrientation(Utils.POTRAIT);
         loadTextures();
         loadActors();
 
@@ -64,8 +64,9 @@ public class GameStage extends Stage{
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        int newX =(int) (centerx + MathUtils.cos(MathUtils.degRad * gun.getAngle())* Utils.gunWid/2);
-        int newY =(int) (centery + MathUtils.sin(MathUtils.degRad * gun.getAngle())* Utils.gunWid/2);
+        int bWid =(int) (Utils.bulletHei * Gdx.graphics.getHeight());
+        int newX =(int) (centerx + MathUtils.cos(MathUtils.degRad * gun.getAngle())* bWid/2);
+        int newY =(int) (centery + MathUtils.sin(MathUtils.degRad * gun.getAngle())* bWid/2);
         Bullet b = new Bullet(this.bulletTexture,newX,newY,gun.getAngle());
         bullets.add(b);
         addActor(b);
@@ -131,17 +132,20 @@ public class GameStage extends Stage{
 
     public void loadUfoInfoBar(){
         Vector2 size = new Vector2(Utils.screenWidth/4, Utils.ufoBarHeight);
-        Vector2 pos = new Vector2(Utils.screenWidth - Utils.screenWidth/4 - 2*Utils.bulletBarHeight ,Utils.screenHeight - 2 * Utils.ufoBarHeight);
+        //Vector2 pos = new Vector2(Utils.screenWidth - Utils.screenWidth/4 - 2*Utils.bulletBarHeight ,Utils.screenHeight - 2 * Utils.ufoBarHeight);
+        Vector2 pos = new Vector2(0 ,Gdx.graphics.getHeight() - size.y);
 
         this.ufoBar = new InfoBar(this.ufoTexture,pos,size,Utils.MAXUFO,0);
+        this.ufoBar.rotateBy(-90);
         addActor(this.ufoBar);
     }
 
     public void loadBulletInfoBar(){
         Vector2 size = new Vector2(Utils.screenWidth/4, Utils.bulletBarHeight);
-        Vector2 pos = new Vector2(Utils.screenWidth - Utils.screenWidth/4 -2*Utils.bulletBarHeight ,Utils.screenHeight - 3 * Utils.bulletBarHeight);
-
+        //Vector2 pos = new Vector2(Utils.screenWidth - Utils.screenWidth/4 -2*Utils.bulletBarHeight ,Utils.screenHeight - 3 * Utils.bulletBarHeight);
+        Vector2 pos = new Vector2(0, Gdx.graphics.getHeight() - 2* size.y );
         this.bulletBar = new InfoBar(this.bulletTexture,pos,size,Utils.MAXBULLETS,Utils.MAXBULLETS);
+        this.bulletBar.rotateBy(-90);
         addActor(this.bulletBar);
     }
 

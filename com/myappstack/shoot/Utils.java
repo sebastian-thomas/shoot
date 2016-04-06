@@ -14,12 +14,12 @@ public class Utils {
     public static int screenWidth = Gdx.graphics.getWidth();
     public static int screenHeight = Gdx.graphics.getHeight();
 
-    public static int ufoWid =(int) (0.06 * screenWidth);
-    public static int bulletWid =(int) (0.03 * screenWidth);
-    public static int gunWid =(int) (0.1 * screenWidth);
+    public static float ufoHei = 0.06f;
+    public static float bulletHei =0.03f;
+    public static float gunHei =0.1f;
 
-    public static int ufoBarHeight = (int) (0.03 * screenWidth);
-    public static int bulletBarHeight = (int) (0.03 * screenWidth);
+    public static int ufoBarHeight = (int) (0.03 * screenHeight);
+    public static int bulletBarHeight = (int) (0.03 * screenHeight);
 
 
     public static String LANDSCAPE = "LANDSCAPE";

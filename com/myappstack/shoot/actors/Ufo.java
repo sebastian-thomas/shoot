@@ -30,8 +30,8 @@ public class Ufo extends Image {
     }
 
     private Vector2 calcSize(Vector2 imgSize){
-        int nWidth = Utils.ufoWid;
-        int nHeight = Utils.getProportionalHeight(nWidth, imgSize);
+        int nHeight = (int)(Gdx.graphics.getHeight() * Utils.ufoHei);
+        int nWidth = Utils.getProportionalWidth(nHeight, imgSize);
         return new Vector2(nWidth, nHeight);
     }
 
