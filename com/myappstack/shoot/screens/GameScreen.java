@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.myappstack.shoot.MyGdxGame;
+import com.myappstack.shoot.Utils;
 
 /**
  * Created by seb on 19/03/16.
@@ -13,8 +14,20 @@ public class GameScreen implements Screen {
 
     private Stage stage;
 
-    public GameScreen(MyGdxGame game){
-        this.stage = new GameStage(game);
+    public GameScreen(MyGdxGame game, Utils.Screen stage){
+        if(stage == Utils.Screen.MAINMENU){
+            this.stage = new MainMenuStage(game);
+        }
+        else if(stage == Utils.Screen.SINGLEHAND){
+            this.stage = new GameStage(game);
+        }
+        else if(stage == Utils.Screen.TWOHAND){
+            this.stage = new LandTwoGunStage(game);
+        }
+        else{
+            //hii
+            this.stage = new GameStage(game);
+        }
         //this.stage = new LandTwoGunStage(game);
     }
 

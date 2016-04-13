@@ -131,21 +131,19 @@ public class GameStage extends Stage{
     }
 
     public void loadUfoInfoBar(){
-        Vector2 size = new Vector2(Utils.screenWidth/4, Utils.ufoBarHeight);
+        Vector2 size = new Vector2(Utils.screenHeight/4, Utils.ufoBarHeight * Gdx.graphics.getHeight());
         //Vector2 pos = new Vector2(Utils.screenWidth - Utils.screenWidth/4 - 2*Utils.bulletBarHeight ,Utils.screenHeight - 2 * Utils.ufoBarHeight);
-        Vector2 pos = new Vector2(0 ,Gdx.graphics.getHeight() - size.y);
+        Vector2 pos = new Vector2(size.y ,Gdx.graphics.getHeight() - size.y);
 
-        this.ufoBar = new InfoBar(this.ufoTexture,pos,size,Utils.MAXUFO,0);
-        this.ufoBar.rotateBy(-90);
+        this.ufoBar = new InfoBar(this.ufoTexture,pos,size,Utils.MAXUFO,0, false);
         addActor(this.ufoBar);
     }
 
     public void loadBulletInfoBar(){
-        Vector2 size = new Vector2(Utils.screenWidth/4, Utils.bulletBarHeight);
+        Vector2 size = new Vector2(Utils.screenHeight/4, Utils.bulletBarHeight * Gdx.graphics.getHeight());
         //Vector2 pos = new Vector2(Utils.screenWidth - Utils.screenWidth/4 -2*Utils.bulletBarHeight ,Utils.screenHeight - 3 * Utils.bulletBarHeight);
-        Vector2 pos = new Vector2(0, Gdx.graphics.getHeight() - 2* size.y );
-        this.bulletBar = new InfoBar(this.bulletTexture,pos,size,Utils.MAXBULLETS,Utils.MAXBULLETS);
-        this.bulletBar.rotateBy(-90);
+        Vector2 pos = new Vector2(2 * size.y, Gdx.graphics.getHeight() - size.y );
+        this.bulletBar = new InfoBar(this.bulletTexture,pos,size,Utils.MAXBULLETS,Utils.MAXBULLETS,false);
         addActor(this.bulletBar);
     }
 

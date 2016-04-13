@@ -16,18 +16,20 @@ public class InfoBar extends Actor {
     Vector2 pos;
     Vector2 size;
     Vector2 textureSize;
+    boolean orientationLand;
 
     //the bar should be displayed according to current val and full val of the bar
     int fullVal, currentVal;
     int numTextFullVal = 10;//# of textures to be drawn to represent full val
 
-    public InfoBar(Texture barTexture, Vector2 pos, Vector2 size, int fullVal, int currentVal){
+    public InfoBar(Texture barTexture, Vector2 pos, Vector2 size, int fullVal, int currentVal, boolean orientationLand){
         this.barTexture = barTexture;
         this.barSprite = new Sprite(barTexture);
         this.pos = pos;
         this.size = size;
         this.fullVal = fullVal;
         this.currentVal = currentVal;
+        this.orientationLand = orientationLand;
 
         setSpriteVals();
     }
@@ -36,12 +38,24 @@ public class InfoBar extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         //super.draw(batch, parentAlpha);
         int numSpritesToBeDrawn = (int) ((this.currentVal*this.numTextFullVal/this.fullVal));
-        int nextXpos = (int)this.pos.x;
-        for(int i=0; i < numSpritesToBeDrawn; ++i){
-            barSprite.setPosition(nextXpos, this.pos.y);
-            barSprite.draw(batch);
-            nextXpos = nextXpos + (int)this.textureSize.x;
+
+        if(this.orientationLand){
+            int nextXpos = (int)this.pos.x;
+            for(int i=0; i < numSpritesToBeDrawn; ++i){
+                barSprite.setPosition(nextXpos, this.pos.y);
+                barSprite.draw(batch);
+                nextXpos = nextXpos + (int)this.textureSize.x;
+            }
         }
+        else{
+            int nextYpos = (int) this.pos.y;
+            for(int i=0; i < numSpritesToBeDrawn; ++i){
+                barSprite.setPosition(this.pos.x, nextYpos);
+                barSprite.draw(batch);
+                nextYpos = nextYpos - (int)this.textureSize.y;
+            }
+        }
+
     }
 
     public void setSpriteVals(){
@@ -53,8 +67,14 @@ public class InfoBar extends Actor {
         }
 
         this.textureSize = new Vector2(w,h);
-        this.numTextFullVal =(int) (this.size.x/w);
         barSprite.setSize(w,h);
+        if(this.orientationLand){
+           // barSprite.rotate(90);
+            this.numTextFullVal =(int) (this.size.x/w);
+        }
+        else{
+            this.numTextFullVal =(int) (this.size.x/h);
+        }
     }
 
     public void incrCurrVal(){
