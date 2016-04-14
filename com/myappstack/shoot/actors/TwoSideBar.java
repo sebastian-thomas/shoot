@@ -12,6 +12,8 @@ import com.myappstack.shoot.Utils;
  */
 public class TwoSideBar extends Actor {
 
+    //for landscape mode olny
+    
     int totalTxt = 20;
 
     Texture leftSideTxt, rightSideTxt;
