@@ -10,16 +10,21 @@ public class Utils {
 
     public static int MAXUFO = 20;
     public static int MAXBULLETS = 50;
+    public static int DIFFSIDE = 5;
 
     public static int screenWidth = Gdx.graphics.getWidth();
     public static int screenHeight = Gdx.graphics.getHeight();
 
     public static float ufoHei = 0.06f;
     public static float bulletHei =0.02f;
+    public static float bulletHeiLand =0.03f;
     public static float gunHei =0.1f;
 
     public static float ufoBarHeight = 0.03f ;
     public static float bulletBarHeight = 0.03f;
+
+    public static float twoSideBarHeight = 0.03f;
+    public static float twoSideBarWidth = 0.3f;
 
 
     public static String LANDSCAPE = "LANDSCAPE";

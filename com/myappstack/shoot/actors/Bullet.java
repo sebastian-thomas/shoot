@@ -17,11 +17,28 @@ public class Bullet extends Image {
     private Vector2 size;
     private Vector2 velocity;
     private Rectangle bounds;
+    private boolean land;
 
     private int SPEED = 5;
 
     public Bullet(Texture img, int x, int y, int angle){
         super(img);
+        this.land = false;
+        this.size = calcSize(new Vector2(img.getWidth(), img.getHeight()));
+        this.pos = new Vector2(x,y);
+
+        setSize(this.size.x, this.size.y);
+        setPosition(this.pos.x, this.pos.y);
+        setRotation(angle);
+        setVelocity(angle);
+
+        bounds = new Rectangle();
+        bounds.set(getX(), getY(), getWidth(), getHeight());
+    }
+
+    public Bullet(Texture img, int x, int y, int angle, boolean land){
+        super(img);
+        this.land = land;
         this.size = calcSize(new Vector2(img.getWidth(), img.getHeight()));
         this.pos = new Vector2(x,y);
 
@@ -64,14 +81,9 @@ public class Bullet extends Image {
     }
 
     private Vector2 calcSize(Vector2 imgSize){
-        int nHeight =(int) (Gdx.graphics.getHeight() * Utils.bulletHei);
-        int nWidth = Utils.getProportionalWidth(nHeight, imgSize);
+        int nWidth =(int) (Gdx.graphics.getHeight() * Utils.bulletHei);
+        int nHeight = Utils.getProportionalHeight(nWidth, imgSize);
         return new Vector2(nWidth, nHeight);
     }
 
-    private Vector2 calcPos(){
-        int xPos = (int) (3*Gdx.graphics.getWidth()/4 - this.size.x/2);
-        int yPos = (int) (Gdx.graphics.getHeight()/2 - this.size.y);
-        return new Vector2(xPos, yPos);
-    }
 }

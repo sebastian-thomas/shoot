@@ -63,8 +63,8 @@ public class GameStage extends Stage{
     }
 
     @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        int bWid =(int) (Utils.bulletHei * Gdx.graphics.getHeight());
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        int bWid =(int) (Utils.gunHei * Gdx.graphics.getHeight());
         int newX =(int) (centerx + MathUtils.cos(MathUtils.degRad * gun.getAngle())* bWid/2);
         int newY =(int) (centery + MathUtils.sin(MathUtils.degRad * gun.getAngle())* bWid/2);
         Bullet b = new Bullet(this.bulletTexture,newX,newY,gun.getAngle());
@@ -85,6 +85,7 @@ public class GameStage extends Stage{
 
         if(bulletBar.empty() || ufoBar.full()){
             System.out.println("Game Over");
+            this.game.setScreen(new GameScreen(this.game, Utils.Screen.MAINMENU));
         }
 
         if(timeMillSec != 0L && TimeUtils.timeSinceMillis(timeMillSec) > 2000){

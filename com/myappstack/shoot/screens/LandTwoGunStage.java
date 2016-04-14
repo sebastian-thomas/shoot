@@ -2,11 +2,16 @@ package com.myappstack.shoot.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.myappstack.shoot.MyGdxGame;
 import com.myappstack.shoot.Utils;
 import com.myappstack.shoot.actors.Bullet;
 import com.myappstack.shoot.actors.Gun;
+import com.myappstack.shoot.actors.InfoBar;
+import com.myappstack.shoot.actors.TwoSideBar;
 import com.myappstack.shoot.actors.Ufo;
 
 import java.util.ArrayList;
@@ -25,14 +30,17 @@ public class LandTwoGunStage extends Stage {
     Texture ufoGreenTexture;
     Texture bBlueTexture, bRedTexture;
 
+    Gun redGun, blueGun;
+    TwoSideBar twoSideBar;
     ArrayList<Bullet> bullets;
     ArrayList<Ufo> ufos;
 
-    Gun redGun, blueGun;
+
+
+    long timeMillSec;
 
     public LandTwoGunStage(MyGdxGame game){
         this.game = game;
-        //this.game.actionResolver.setOrientation(Utils.LANDSCAPE);
         Gdx.input.setInputProcessor(this);
 
         loadTextures();
@@ -40,15 +48,87 @@ public class LandTwoGunStage extends Stage {
 
         bullets = new ArrayList<Bullet>();
         ufos = new ArrayList<Ufo>();
+
+        addUfo();
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        accumulator += delta;
+        while (accumulator >= delta) {
+            accumulator -= TIME_STEP;
+        }
+
+        if(ufos.size() >= 10){
+            System.out.println("Game Over");
+            this.game.setScreen(new GameScreen(this.game, Utils.Screen.MAINMENU));
+        }
+
+        if(timeMillSec != 0L && TimeUtils.timeSinceMillis(timeMillSec) > 2000){
+            addUfo();
+        }
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        //return super.touchDown(screenX, screenY, pointer, button);
+        int bw = (int) (Utils.gunHei * Gdx.graphics.getWidth());
+        int centerx, centery;
+        Bullet b;
+        centery = Gdx.graphics.getHeight()/2;
+        if(screenX < Gdx.graphics.getWidth()/2){
+            centerx = Gdx.graphics.getWidth()/4;
+            int newX =(int) (centerx + MathUtils.cos(MathUtils.degRad * redGun.getAngle())* bw/2);
+            int newY =(int) (centery + MathUtils.sin(MathUtils.degRad * redGun.getAngle())* bw/2);
+            b = new Bullet(this.bRedTexture,newX,newY,redGun.getAngle());
+            bullets.add(b);
+            addActor(b);
+        }
+        else{
+            centerx = 3*Gdx.graphics.getWidth()/4;
+            int newX =(int) (centerx + MathUtils.cos(MathUtils.degRad * blueGun.getAngle())* bw/2);
+            int newY =(int) (centery + MathUtils.sin(MathUtils.degRad * blueGun.getAngle())* bw/2);
+            b = new Bullet(this.bBlueTexture,newX,newY,blueGun.getAngle());
+            bullets.add(b);
+            addActor(b);
+        }
+
+
+
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return super.touchUp(screenX, screenY, pointer, button);
+    }
+
+    public void addUfo(){
+        timeMillSec = TimeUtils.millis();
+        Ufo u = new Ufo(this.ufoGreenTexture);
+        ufos.add(u);
+        addActor(u);
     }
 
     public void loadActors(){
-        this.redGun = new Gun(this.gunRedTexture, 0, 1);
-        this.blueGun = new Gun(this.gunBlueTexture, 1 , 0);
+        this.blueGun = new Gun(this.gunBlueTexture, 0,0);
+        this.redGun = new Gun(this.gunRedTexture, 1,1);
+
+        this.redGun.setDebug(true);
+        this.blueGun.setDebug(true);
 
         addActor(redGun);
         addActor(blueGun);
+
+        Vector2 tsbSize = new Vector2(Gdx.graphics.getWidth() * Utils.twoSideBarWidth, Gdx.graphics.getHeight() * Utils.twoSideBarHeight);
+        Vector2 tsbPos = new Vector2(Gdx.graphics.getWidth()/2 - tsbSize.x/2 ,Gdx.graphics.getHeight() - tsbSize.y - 5);
+        twoSideBar = new TwoSideBar(bRedTexture, bBlueTexture,tsbPos,tsbSize);
+        addActor(twoSideBar);
+
     }
+
 
     public void loadTextures(){
         this.gunRedTexture = new Texture(Gdx.files.internal("land/gunRed.png"));

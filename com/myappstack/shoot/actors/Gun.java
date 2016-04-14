@@ -25,11 +25,11 @@ public class Gun extends Image{
         this.size = calcSizeLand(new Vector2(img.getWidth(), img.getHeight()));
         this.pos = calcPos();
         this.angle = 0;
-        this.rotation = 0;
+        this.rotation = 1;
 
         setSize(this.size.x, this.size.y);
         setPosition(this.pos.x, this.pos.y);
-        setOrigin(getHeight()/2, getHeight()/2);
+        setOrigin(getWidth() / 2, getWidth() / 2);
     }
 
     public Gun(Texture img, int pos, int rotation){
@@ -42,25 +42,43 @@ public class Gun extends Image{
 
         setSize(this.size.x, this.size.y);
         setPosition(this.pos.x, this.pos.y);
-        setOrigin(getWidth() / 2, getHeight() / 2);
+        if(this.rotation == 0){
+            setOrigin(getWidth() - getHeight() / 2, getHeight() / 2);
+        }
+        else{
+            setOrigin(getHeight() / 2, getHeight() / 2);
+        }
+
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        if(this.rotation == 0){
+
+        if(rotation == 0){
             this.angle += this.INCANGLE;
+            if(this.angle >= 360){
+                this.angle = 0;
+            }
+            rotateBy(this.INCANGLE);
         }
         else{
             this.angle -= this.INCANGLE;
+            if(this.angle <= -360){
+                this.angle = 0;
+            }
+           rotateBy(-1 * this.INCANGLE);
         }
 
-        this.angle = (this.angle % 360);
-        rotateBy(this.INCANGLE);
     }
 
     public int getAngle(){
-        return angle;
+        if(this.rotation == 1){
+            return angle;
+        }
+        else{
+            return 180 + angle;
+        }
     }
 
     private Vector2 calcSizeLand(Vector2 imgSize){
@@ -74,6 +92,7 @@ public class Gun extends Image{
     private Vector2 calcPosLand(int pos){
         int xPos =0, yPos = 0;
         if(pos == 1){
+            //first
             xPos = (int) (Gdx.graphics.getWidth()/4 - this.size.x/2);
             yPos = (int) (Gdx.graphics.getHeight()/2 - this.size.y/2);
         }
