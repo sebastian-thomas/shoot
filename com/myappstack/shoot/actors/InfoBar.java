@@ -64,6 +64,7 @@ public class InfoBar extends Actor {
         if(h > size.y){
             h = (int) (size.y - 2);
             w = Utils.getProportionalWidth(h,new Vector2(barTexture.getWidth(), barTexture.getHeight()));
+            System.out.print("Prob?");
         }
 
         this.textureSize = new Vector2(w,h);

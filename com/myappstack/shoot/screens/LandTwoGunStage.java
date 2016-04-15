@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.myappstack.shoot.MyGdxGame;
 import com.myappstack.shoot.Utils;
@@ -32,6 +34,7 @@ public class LandTwoGunStage extends Stage {
 
     Gun redGun, blueGun;
     TwoSideBar twoSideBar;
+    InfoBar bLeftBar, bRightBar;
     ArrayList<Bullet> bullets;
     ArrayList<Ufo> ufos;
 
@@ -61,7 +64,7 @@ public class LandTwoGunStage extends Stage {
             accumulator -= TIME_STEP;
         }
 
-        if(ufos.size() >= 10){
+        if(bRightBar.empty() || bLeftBar.empty() || twoSideBar.sideFull()){
             System.out.println("Game Over");
             this.game.setScreen(new GameScreen(this.game, Utils.Screen.MAINMENU));
         }
@@ -69,6 +72,36 @@ public class LandTwoGunStage extends Stage {
         if(timeMillSec != 0L && TimeUtils.timeSinceMillis(timeMillSec) > 2000){
             addUfo();
         }
+
+        ArrayList<Ufo> ufosToRemove = new ArrayList<Ufo>();
+        int lCount =0, rCount = 0;
+        for(Actor a : this.getActors()){
+            if(a instanceof Bullet){
+                for(Ufo u : ufos){
+                    if(u.getBounds().overlaps(((Bullet) a).getBounds())){
+                        ufosToRemove.add(u);
+                        if(((Bullet) a).getType() == Bullet.Type.FROMLEFT){
+                            lCount++;
+                            bLeftBar.incrBy(3);
+                        }
+                        else{
+                            rCount++;
+                            bRightBar.incrBy(3);
+                        }
+                    }
+                }
+            }
+        }
+
+        for(Ufo u : ufosToRemove){
+            if(ufos.contains(u)){
+                ufos.remove(u);
+                u.addAction(Actions.removeActor());
+            }
+        }
+
+        twoSideBar.addLeftCount(lCount);
+        twoSideBar.addRightCount(rCount);
     }
 
     @Override
@@ -82,16 +115,18 @@ public class LandTwoGunStage extends Stage {
             centerx = Gdx.graphics.getWidth()/4;
             int newX =(int) (centerx + MathUtils.cos(MathUtils.degRad * redGun.getAngle())* bw/2);
             int newY =(int) (centery + MathUtils.sin(MathUtils.degRad * redGun.getAngle())* bw/2);
-            b = new Bullet(this.bRedTexture,newX,newY,redGun.getAngle());
+            b = new Bullet(this.bRedTexture,Bullet.Type.FROMLEFT,newX,newY,redGun.getAngle());
             bullets.add(b);
+            bLeftBar.decrCurrVal();
             addActor(b);
         }
         else{
             centerx = 3*Gdx.graphics.getWidth()/4;
             int newX =(int) (centerx + MathUtils.cos(MathUtils.degRad * blueGun.getAngle())* bw/2);
             int newY =(int) (centery + MathUtils.sin(MathUtils.degRad * blueGun.getAngle())* bw/2);
-            b = new Bullet(this.bBlueTexture,newX,newY,blueGun.getAngle());
+            b = new Bullet(this.bBlueTexture,Bullet.Type.FROMRIGHT,newX,newY,blueGun.getAngle());
             bullets.add(b);
+            bRightBar.decrCurrVal();
             addActor(b);
         }
 
@@ -122,10 +157,23 @@ public class LandTwoGunStage extends Stage {
         addActor(redGun);
         addActor(blueGun);
 
+        //two side bar
         Vector2 tsbSize = new Vector2(Gdx.graphics.getWidth() * Utils.twoSideBarWidth, Gdx.graphics.getHeight() * Utils.twoSideBarHeight);
         Vector2 tsbPos = new Vector2(Gdx.graphics.getWidth()/2 - tsbSize.x/2 ,Gdx.graphics.getHeight() - tsbSize.y - 5);
         twoSideBar = new TwoSideBar(bRedTexture, bBlueTexture,tsbPos,tsbSize);
         addActor(twoSideBar);
+
+        //bullet info bars
+        int wid = (int) (Gdx.graphics.getWidth() * Utils.landInfoBarWidth);
+        int hei = (int) (Gdx.graphics.getHeight() * Utils.landInfoBarHeig);
+        int xLPos = (int) tsbPos.x/2 - wid/2;
+        bLeftBar = new InfoBar(this.bRedTexture, new Vector2(xLPos, tsbPos.y),
+                new Vector2(wid,hei),Utils.MAXBULLETS, Utils.MAXBULLETS, true);
+        bRightBar = new InfoBar(this.bBlueTexture, new Vector2(Gdx.graphics.getWidth() - xLPos - wid, tsbPos.y),
+                new Vector2(wid,hei),Utils.MAXBULLETS, Utils.MAXBULLETS, true);
+
+        addActor(bLeftBar);
+        addActor(bRightBar);
 
     }
 

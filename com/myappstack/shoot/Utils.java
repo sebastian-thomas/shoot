@@ -26,6 +26,9 @@ public class Utils {
     public static float twoSideBarHeight = 0.03f;
     public static float twoSideBarWidth = 0.3f;
 
+    public static float landInfoBarWidth = 0.2f;
+    public static float landInfoBarHeig = 0.1f;
+
 
     public static String LANDSCAPE = "LANDSCAPE";
     public static String POTRAIT = "POTRAIT";

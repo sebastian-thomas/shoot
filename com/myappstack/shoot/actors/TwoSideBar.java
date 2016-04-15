@@ -15,6 +15,7 @@ public class TwoSideBar extends Actor {
     //for landscape mode olny
     
     int totalTxt = 20;
+    int htxt = totalTxt/2;
 
     Texture leftSideTxt, rightSideTxt;
     Sprite leftSprite, rightSprite;
@@ -55,6 +56,14 @@ public class TwoSideBar extends Actor {
         return false;
     }
 
+    public void addLeftCount(int c){
+        leftCount += c;
+    }
+
+    public void addRightCount(int c){
+        rightCount += c;
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         int leftTxtNum = 10, rightTextNum = 10;
@@ -63,14 +72,12 @@ public class TwoSideBar extends Actor {
         }
         else if(leftCount > rightCount ){
             int extraLeftCount = leftCount - rightCount;
-            int extraTxt = totalTxt * (extraLeftCount / Utils.DIFFSIDE);
-            leftTxtNum = extraTxt > totalTxt ? totalTxt : extraTxt;
+            leftTxtNum = extraLeftCount + htxt > totalTxt ? totalTxt : extraLeftCount + htxt;
             rightTextNum = totalTxt - leftTxtNum;
         }
         else {
             int extraRightCount = rightCount - leftCount;
-            int extraTxt = totalTxt * (extraRightCount / Utils.DIFFSIDE);
-            rightTextNum = extraTxt > totalTxt ? totalTxt : extraTxt;
+            rightTextNum = extraRightCount + htxt> totalTxt ? totalTxt : extraRightCount + htxt;
             leftTxtNum = totalTxt - rightTextNum;
         }
 

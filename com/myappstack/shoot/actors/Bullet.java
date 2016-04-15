@@ -19,10 +19,18 @@ public class Bullet extends Image {
     private Rectangle bounds;
     private boolean land;
 
+    public static enum Type {
+        NORMAL,
+        FROMLEFT,
+        FROMRIGHT
+    }
+    Type type;
+
     private int SPEED = 5;
 
-    public Bullet(Texture img, int x, int y, int angle){
+    public Bullet(Texture img, Type type, int x, int y, int angle){
         super(img);
+        this.type = type;
         this.land = false;
         this.size = calcSize(new Vector2(img.getWidth(), img.getHeight()));
         this.pos = new Vector2(x,y);
@@ -36,8 +44,9 @@ public class Bullet extends Image {
         bounds.set(getX(), getY(), getWidth(), getHeight());
     }
 
-    public Bullet(Texture img, int x, int y, int angle, boolean land){
+    public Bullet(Texture img,Type type, int x, int y, int angle, boolean land){
         super(img);
+        this.type = type;
         this.land = land;
         this.size = calcSize(new Vector2(img.getWidth(), img.getHeight()));
         this.pos = new Vector2(x,y);
@@ -69,6 +78,10 @@ public class Bullet extends Image {
             return true;
         }
         return false;
+    }
+
+    public Type getType(){
+        return type;
     }
 
     public Rectangle getBounds(){

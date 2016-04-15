@@ -67,7 +67,7 @@ public class GameStage extends Stage{
         int bWid =(int) (Utils.gunHei * Gdx.graphics.getHeight());
         int newX =(int) (centerx + MathUtils.cos(MathUtils.degRad * gun.getAngle())* bWid/2);
         int newY =(int) (centery + MathUtils.sin(MathUtils.degRad * gun.getAngle())* bWid/2);
-        Bullet b = new Bullet(this.bulletTexture,newX,newY,gun.getAngle());
+        Bullet b = new Bullet(this.bulletTexture,Bullet.Type.NORMAL,newX,newY,gun.getAngle());
         bullets.add(b);
         addActor(b);
         bulletBar.decrCurrVal();
