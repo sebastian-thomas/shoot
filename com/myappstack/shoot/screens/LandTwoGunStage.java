@@ -167,9 +167,9 @@ public class LandTwoGunStage extends Stage {
         int wid = (int) (Gdx.graphics.getWidth() * Utils.landInfoBarWidth);
         int hei = (int) (Gdx.graphics.getHeight() * Utils.landInfoBarHeig);
         int xLPos = (int) tsbPos.x/2 - wid/2;
-        bLeftBar = new InfoBar(this.bRedTexture, new Vector2(xLPos, tsbPos.y),
+        bLeftBar = new InfoBar(this.bRedTexture,this.bRedTexture, new Vector2(xLPos, tsbPos.y),
                 new Vector2(wid,hei),Utils.MAXBULLETS, Utils.MAXBULLETS, true);
-        bRightBar = new InfoBar(this.bBlueTexture, new Vector2(Gdx.graphics.getWidth() - xLPos - wid, tsbPos.y),
+        bRightBar = new InfoBar(this.bBlueTexture,this.bBlueTexture, new Vector2(Gdx.graphics.getWidth() - xLPos - wid, tsbPos.y),
                 new Vector2(wid,hei),Utils.MAXBULLETS, Utils.MAXBULLETS, true);
 
         addActor(bLeftBar);
@@ -184,5 +184,9 @@ public class LandTwoGunStage extends Stage {
         this.ufoGreenTexture = new Texture(Gdx.files.internal("land/uGreen.png"));
         this.bBlueTexture = new Texture(Gdx.files.internal("land/bBlue.png"));
         this.bRedTexture = new Texture(Gdx.files.internal("land/bRed.png"));
+
+        //this.bulletInfoElemTxt = new Texture(Gdx.files.internal("BulletBarElem.png"));
+        //this.ufoInfoElemTxt = new Texture(Gdx.files.internal("UfoBarElem.png"));
+        //this.infoBackTxt = new Texture(Gdx.files.internal("InfoBarBack.png"));
     }
 }

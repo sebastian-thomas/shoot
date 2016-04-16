@@ -20,8 +20,8 @@ public class Utils {
     public static float bulletHeiLand =0.03f;
     public static float gunHei =0.1f;
 
-    public static float ufoBarHeight = 0.03f ;
-    public static float bulletBarHeight = 0.03f;
+    public static float ufoBarHeight = 0.06f ;
+    public static float bulletBarHeight = 0.06f;
 
     public static float twoSideBarHeight = 0.03f;
     public static float twoSideBarWidth = 0.3f;

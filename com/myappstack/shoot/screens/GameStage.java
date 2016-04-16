@@ -32,6 +32,7 @@ public class GameStage extends Stage{
     Texture gunTexture;
     Texture ufoTexture;
     Texture bulletTexture;
+    Texture bulletInfoElemTxt, ufoInfoElemTxt, infoBackTxt;
 
     Gun gun;
     InfoBar bulletBar;
@@ -134,17 +135,17 @@ public class GameStage extends Stage{
     public void loadUfoInfoBar(){
         Vector2 size = new Vector2(Utils.screenHeight/4, Utils.ufoBarHeight * Gdx.graphics.getHeight());
         //Vector2 pos = new Vector2(Utils.screenWidth - Utils.screenWidth/4 - 2*Utils.bulletBarHeight ,Utils.screenHeight - 2 * Utils.ufoBarHeight);
-        Vector2 pos = new Vector2(size.y ,Gdx.graphics.getHeight() - size.y);
+        Vector2 pos = new Vector2(size.y ,Gdx.graphics.getHeight()/4 - size.x/2);
 
-        this.ufoBar = new InfoBar(this.ufoTexture,pos,size,Utils.MAXUFO,0, false);
+        this.ufoBar = new InfoBar(this.ufoInfoElemTxt, this.infoBackTxt,pos,size,Utils.MAXUFO,0, false);
         addActor(this.ufoBar);
     }
 
     public void loadBulletInfoBar(){
         Vector2 size = new Vector2(Utils.screenHeight/4, Utils.bulletBarHeight * Gdx.graphics.getHeight());
         //Vector2 pos = new Vector2(Utils.screenWidth - Utils.screenWidth/4 -2*Utils.bulletBarHeight ,Utils.screenHeight - 3 * Utils.bulletBarHeight);
-        Vector2 pos = new Vector2(2 * size.y, Gdx.graphics.getHeight() - size.y );
-        this.bulletBar = new InfoBar(this.bulletTexture,pos,size,Utils.MAXBULLETS,Utils.MAXBULLETS,false);
+        Vector2 pos = new Vector2(size.y, 3*Gdx.graphics.getHeight()/4 - size.x/2 );
+        this.bulletBar = new InfoBar(this.bulletInfoElemTxt, this.infoBackTxt,pos,size,Utils.MAXBULLETS,Utils.MAXBULLETS,false);
         addActor(this.bulletBar);
     }
 
@@ -152,5 +153,8 @@ public class GameStage extends Stage{
         this.gunTexture = new Texture(Gdx.files.internal("gung.png"));
         this.ufoTexture = new Texture(Gdx.files.internal("ufog.png"));
         this.bulletTexture = new Texture(Gdx.files.internal("bulletg.png"));
+        this.bulletInfoElemTxt = new Texture(Gdx.files.internal("BulletBarElem.png"));
+        this.ufoInfoElemTxt = new Texture(Gdx.files.internal("UfoBarElem.png"));
+        this.infoBackTxt = new Texture(Gdx.files.internal("InfoBarBack.png"));
     }
 }
