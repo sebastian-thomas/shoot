@@ -28,11 +28,12 @@ public class LandTwoGunStage extends Stage {
     private float accumulator = 0f;
 
     //load all textures needed
-    Texture gunRedTexture, gunBlueTexture;
+    Texture gunLeftTexture, gunRightTexture;
     Texture ufoGreenTexture;
-    Texture bBlueTexture, bRedTexture;
+    Texture bRightTexture, bLeftTexture;
+    Texture lBulletInfoElemTxt, rBulletInfoElemTxt, infoBackTxt;
 
-    Gun redGun, blueGun;
+    Gun leftGun, rightGun;
     TwoSideBar twoSideBar;
     InfoBar bLeftBar, bRightBar;
     ArrayList<Bullet> bullets;
@@ -113,18 +114,18 @@ public class LandTwoGunStage extends Stage {
         centery = Gdx.graphics.getHeight()/2;
         if(screenX < Gdx.graphics.getWidth()/2){
             centerx = Gdx.graphics.getWidth()/4;
-            int newX =(int) (centerx + MathUtils.cos(MathUtils.degRad * redGun.getAngle())* bw/2);
-            int newY =(int) (centery + MathUtils.sin(MathUtils.degRad * redGun.getAngle())* bw/2);
-            b = new Bullet(this.bRedTexture,Bullet.Type.FROMLEFT,newX,newY,redGun.getAngle());
+            int newX =(int) (centerx + MathUtils.cos(MathUtils.degRad * leftGun.getAngle())* bw/2);
+            int newY =(int) (centery + MathUtils.sin(MathUtils.degRad * leftGun.getAngle())* bw/2);
+            b = new Bullet(this.bLeftTexture,Bullet.Type.FROMLEFT,newX,newY,leftGun.getAngle());
             bullets.add(b);
             bLeftBar.decrCurrVal();
             addActor(b);
         }
         else{
             centerx = 3*Gdx.graphics.getWidth()/4;
-            int newX =(int) (centerx + MathUtils.cos(MathUtils.degRad * blueGun.getAngle())* bw/2);
-            int newY =(int) (centery + MathUtils.sin(MathUtils.degRad * blueGun.getAngle())* bw/2);
-            b = new Bullet(this.bBlueTexture,Bullet.Type.FROMRIGHT,newX,newY,blueGun.getAngle());
+            int newX =(int) (centerx + MathUtils.cos(MathUtils.degRad * rightGun.getAngle())* bw/2);
+            int newY =(int) (centery + MathUtils.sin(MathUtils.degRad * rightGun.getAngle())* bw/2);
+            b = new Bullet(this.bRightTexture,Bullet.Type.FROMRIGHT,newX,newY,rightGun.getAngle());
             bullets.add(b);
             bRightBar.decrCurrVal();
             addActor(b);
@@ -148,28 +149,28 @@ public class LandTwoGunStage extends Stage {
     }
 
     public void loadActors(){
-        this.blueGun = new Gun(this.gunBlueTexture, 0,0);
-        this.redGun = new Gun(this.gunRedTexture, 1,1);
+        this.rightGun = new Gun(this.gunRightTexture, 0,0);
+        this.leftGun = new Gun(this.gunLeftTexture, 1,1);
 
-        this.redGun.setDebug(true);
-        this.blueGun.setDebug(true);
+        this.leftGun.setDebug(true);
+        this.rightGun.setDebug(true);
 
-        addActor(redGun);
-        addActor(blueGun);
+        addActor(leftGun);
+        addActor(rightGun);
 
         //two side bar
         Vector2 tsbSize = new Vector2(Gdx.graphics.getWidth() * Utils.twoSideBarWidth, Gdx.graphics.getHeight() * Utils.twoSideBarHeight);
-        Vector2 tsbPos = new Vector2(Gdx.graphics.getWidth()/2 - tsbSize.x/2 ,Gdx.graphics.getHeight() - tsbSize.y - 5);
-        twoSideBar = new TwoSideBar(bRedTexture, bBlueTexture,tsbPos,tsbSize);
+        Vector2 tsbPos = new Vector2(Gdx.graphics.getWidth()/2 - tsbSize.x/2 ,Gdx.graphics.getHeight() - 2*tsbSize.y);
+        twoSideBar = new TwoSideBar(lBulletInfoElemTxt, rBulletInfoElemTxt,tsbPos,tsbSize);
         addActor(twoSideBar);
 
         //bullet info bars
         int wid = (int) (Gdx.graphics.getWidth() * Utils.landInfoBarWidth);
         int hei = (int) (Gdx.graphics.getHeight() * Utils.landInfoBarHeig);
         int xLPos = (int) tsbPos.x/2 - wid/2;
-        bLeftBar = new InfoBar(this.bRedTexture,this.bRedTexture, new Vector2(xLPos, tsbPos.y),
+        bLeftBar = new InfoBar(this.lBulletInfoElemTxt,this.infoBackTxt, new Vector2(xLPos, tsbPos.y),
                 new Vector2(wid,hei),Utils.MAXBULLETS, Utils.MAXBULLETS, true);
-        bRightBar = new InfoBar(this.bBlueTexture,this.bBlueTexture, new Vector2(Gdx.graphics.getWidth() - xLPos - wid, tsbPos.y),
+        bRightBar = new InfoBar(this.rBulletInfoElemTxt,this.infoBackTxt, new Vector2(Gdx.graphics.getWidth() - xLPos - wid, tsbPos.y),
                 new Vector2(wid,hei),Utils.MAXBULLETS, Utils.MAXBULLETS, true);
 
         addActor(bLeftBar);
@@ -179,14 +180,14 @@ public class LandTwoGunStage extends Stage {
 
 
     public void loadTextures(){
-        this.gunRedTexture = new Texture(Gdx.files.internal("land/gunRed.png"));
-        this.gunBlueTexture = new Texture(Gdx.files.internal("land/gunBlue.png"));
-        this.ufoGreenTexture = new Texture(Gdx.files.internal("land/uGreen.png"));
-        this.bBlueTexture = new Texture(Gdx.files.internal("land/bBlue.png"));
-        this.bRedTexture = new Texture(Gdx.files.internal("land/bRed.png"));
+        this.gunLeftTexture = new Texture(Gdx.files.internal("land/gungLeft.png"));
+        this.gunRightTexture = new Texture(Gdx.files.internal("land/gungRight.png"));
+        this.ufoGreenTexture = new Texture(Gdx.files.internal("land/ufow.png"));
+        this.bRightTexture = new Texture(Gdx.files.internal("land/bRight.png"));
+        this.bLeftTexture = new Texture(Gdx.files.internal("land/bLeft.png"));
 
-        //this.bulletInfoElemTxt = new Texture(Gdx.files.internal("BulletBarElem.png"));
-        //this.ufoInfoElemTxt = new Texture(Gdx.files.internal("UfoBarElem.png"));
-        //this.infoBackTxt = new Texture(Gdx.files.internal("InfoBarBack.png"));
+        this.lBulletInfoElemTxt = new Texture(Gdx.files.internal("land/lBarElem.png"));
+        this.rBulletInfoElemTxt = new Texture(Gdx.files.internal("land/rBarElem.png"));
+        this.infoBackTxt = new Texture(Gdx.files.internal("InfoBarBack.png"));
     }
 }
